@@ -9,6 +9,7 @@ import {
   getProductReviews,
   deleteReview,
   getProductsByCategory,
+  getProductsByBrand,
   getProductsStats
 } from '../controllers/productController.js';
 import { isAuthenticatedUser, authorizeRoles } from '../middlewares/auth.js';
@@ -19,6 +20,7 @@ const router = express.Router();
 router.route('/products').get(getAllProducts);
 router.route('/product/:id').get(getProductDetails);
 router.route('/products/category/:category').get(getProductsByCategory);
+router.route('/products/brand/:brand').get(getProductsByBrand);
 router.route('/products/stats').get(getProductsStats);
 
 // Review routes (require authentication)

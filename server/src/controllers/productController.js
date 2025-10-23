@@ -37,7 +37,7 @@ export const getAllProducts = catchAsyncErrors(async (req, res, next) => {
 
 // Get Single Product Details
 export const getProductDetails = catchAsyncErrors(async (req, res, next) => {
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.id).populate('variations');
 
   if (!product) {
     return next(new ErrorHandler('Product not found', 404));
@@ -199,6 +199,18 @@ export const getProductsByCategory = catchAsyncErrors(async (req, res, next) => 
     products
   });
 });
+
+// Get Products by Brand
+export const getProductsByBrand = catchAsyncErrors(async (req, res, next) => {
+  const products = await Product.getProductsByBrand(req.params.brand);
+
+  res.status(200).json({
+    success: true,
+    products
+  });
+});
+
+
 
 // Get Products Statistics
 export const getProductsStats = catchAsyncErrors(async (req, res, next) => {

@@ -22,6 +22,11 @@ const productSchema = new mongoose.Schema({
     required: [true, 'Product category is required'],
     trim: true
   },
+  brand: {
+    type: String,
+    required: [true, 'Product brand is required'],
+    trim: true
+  },
   stock: {
     type: Number,
     required: [true, 'Product stock is required'],
@@ -84,6 +89,7 @@ const productSchema = new mongoose.Schema({
 productSchema.index({ name: 'text', description: 'text' });
 productSchema.index({ price: 1 });
 productSchema.index({ category: 1 });
+productSchema.index({ brand: 1 });
 productSchema.index({ createdAt: -1 });
 
 // Virtual for discount percentage
@@ -92,6 +98,19 @@ productSchema.virtual('discountPercentage').get(function() {
     return ((this.originalPrice - this.price) / this.originalPrice * 100).toFixed(2);
   }
   return 0;
+});
+
+// Virtual for variations
+productSchema.virtual('variations', {
+  ref: 'Variation',
+  localField: '_id',
+  foreignField: 'product'
+});
+
+// Virtual for total stock from variations
+productSchema.virtual('totalStock').get(function() {
+  // This will be calculated in controller if needed
+  return this.stock; // Fallback to main stock
 });
 
 // Pre save middleware
@@ -106,6 +125,13 @@ productSchema.pre('save', function(next) {
 productSchema.statics.getProductsByCategory = function(category) {
   return this.find({ category: category });
 };
+
+// Static method to get products by brand
+productSchema.statics.getProductsByBrand = function(brand) {
+  return this.find({ brand: brand });
+};
+
+
 
 // Instance method to update stock
 productSchema.methods.updateStock = function(quantity) {

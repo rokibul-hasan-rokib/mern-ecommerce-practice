@@ -45,11 +45,21 @@ app.get("/", (req, res, next) => {
 import productRoutes from "./src/routes/productRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import orderRoutes from "./src/routes/orderRoutes.js";
+import categoryRoutes from "./src/routes/categoryRoutes.js";
+import brandRoutes from "./src/routes/brandRoutes.js";
+import attributeRoutes from "./src/routes/attributeRoutes.js";
+import attributeValueRoutes from "./src/routes/attributeValueRoutes.js";
+import variationRoutes from "./src/routes/variationRoutes.js";
 
 // API routes
 app.use("/api/v1", productRoutes);
 app.use("/api/v1", userRoutes);
 app.use("/api/v1", orderRoutes);
+app.use("/api/v1", categoryRoutes);
+app.use("/api/v1", brandRoutes);
+app.use("/api/v1", attributeRoutes);
+app.use("/api/v1", attributeValueRoutes);
+app.use("/api/v1", variationRoutes);
 
 // Handle undefined routes
 // app.all("/*", (req, res, next) => {
